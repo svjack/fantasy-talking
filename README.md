@@ -1,8 +1,7 @@
 # FantasyTalking: Realistic Talking Portrait Generation via Coherent Motion Synthesis
 
 [![Home Page](https://img.shields.io/badge/Project-<Website>-blue.svg)](https://fantasy-amap.github.io/fantasy-talking/) 
-[![hf_paper](https://img.shields.io/badge/🤗-Paper%20In%20HF-red.svg)]()
-[![arXiv](https://img.shields.io/badge/Arxiv-2502.13995-b31b1b.svg?logo=arXiv)]() 
+[![arXiv](https://img.shields.io/badge/Arxiv-2504.04842-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2504.04842) 
 
 ## Abstract
 
@@ -17,5 +16,13 @@ Ours model and code will be open sourced before August.
 
 ## Citation
 ```
-
+@misc{wang2025fantasytalkingrealistictalkingportrait,
+      title={FantasyTalking: Realistic Talking Portrait Generation via Coherent Motion Synthesis}, 
+      author={Mengchao Wang and Qiang Wang and Fan Jiang and Yaqi Fan and Yunpeng Zhang and Yonggang Qi and Kun Zhao and Mu Xu},
+      year={2025},
+      eprint={2504.04842},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2504.04842}, 
+}
 ```

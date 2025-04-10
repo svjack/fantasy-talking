@@ -13,7 +13,7 @@
 
 ## Code
 
-Ours model and code will be open sourced before August.
+Ours model and code is comming soon.
 
 ## Citation
 ```

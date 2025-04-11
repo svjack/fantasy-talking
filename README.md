@@ -17,13 +17,10 @@ Ours model and code is comming soon.
 
 ## Citation
 ```
-@misc{wang2025fantasytalkingrealistictalkingportrait,
-      title={FantasyTalking: Realistic Talking Portrait Generation via Coherent Motion Synthesis}, 
-      author={Mengchao Wang and Qiang Wang and Fan Jiang and Yaqi Fan and Yunpeng Zhang and Yonggang Qi and Kun Zhao and Mu Xu},
-      year={2025},
-      eprint={2504.04842},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2504.04842}, 
+@article{wang2025fantasytalking,
+  title={FantasyTalking: Realistic Talking Portrait Generation via Coherent Motion Synthesis},
+  author={Wang, Mengchao and Wang, Qiang and Jiang, Fan and Fan, Yaqi and Zhang, Yunpeng and Qi, Yonggang and Zhao, Kun and Xu, Mu},
+  journal={arXiv preprint arXiv:2504.04842},
+  year={2025}
 }
 ```

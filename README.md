@@ -26,8 +26,6 @@ Install dependencies:
 ```
 # Ensure torch >= 2.0.0
 pip install -r requirements.txt
-# Optional to install flash_attn to accelerate attention computation
-pip install flash_attn
 ```
 
 ### 🧱Model Download
@@ -42,7 +40,7 @@ Download models using huggingface-cli:
 pip install "huggingface_hub[cli]"
 huggingface-cli download Wan-AI/Wan2.1-I2V-14B-720P --local-dir ./models/Wan2.1-I2V-14B-720P
 huggingface-cli download facebook/wav2vec2-base-960h --local-dir ./models/wav2vec2-base-960h
-huggingface-cli download acvlab/FantasyTalking fantasytalking_model.ckpt --local-dir ./models/fantasytalking_model.ckpt
+huggingface-cli download acvlab/FantasyTalking fantasytalking_model.ckpt --local-dir ./models
 ```
 
 Download models using modelscope-cli:
@@ -50,7 +48,7 @@ Download models using modelscope-cli:
 pip install modelscope
 modelscope download Wan-AI/Wan2.1-I2V-14B-720P --local_dir ./models/Wan2.1-I2V-14B-720P
 modelscope download AI-ModelScope/wav2vec2-base-960h --local_dir ./models/wav2vec2-base-960h
-modelscope download acvlab/FantasyTalking fantasytalking_model.ckpt --local-dir ./models/fantasytalking_model.ckpt
+modelscope download amap_cvlab/FantasyTalking   fantasytalking_model.ckpt  --local_dir ./models
 ```
 
 ### 🔑 Inference

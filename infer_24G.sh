@@ -9,8 +9,4 @@ CUDA_VISIBLE_DEVICES=2 python infer.py \
     --audio_cfg_scale 5.0 \
     --fps 23 \
     --num_persistent_param_in_dit 7000000000 \
-    --seed 1111 
-
-
-
-
+    --seed 1111

@@ -1,8 +1,11 @@
-import imageio, librosa
+# Copyright Alibaba Inc. All Rights Reserved.
+
+import imageio
+import librosa
+import numpy as np
 import torch
 from PIL import Image
 from tqdm import tqdm
-import numpy as np
 
 
 def resize_image_by_longest_edge(image_path, target_size):

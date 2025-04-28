@@ -1,12 +1,16 @@
-import gradio as gr
-from pathlib import Path
+# Copyright Alibaba Inc. All Rights Reserved.
+
 import argparse
 from datetime import datetime
+from pathlib import Path
+
+import gradio as gr
 import librosa
-from infer import load_models,main
 
+from infer import load_models, main
 
-pipe,fantasytalking,wav2vec_processor,wav2vec = None,None,None,None
+pipe, fantasytalking, wav2vec_processor, wav2vec = None, None, None, None
+
 
 def generate_video(
     image_path,
@@ -46,12 +50,10 @@ def generate_video(
     )
 
     try:
-        global pipe, fantasytalking, wav2vec_processor, wav2vec  
+        global pipe, fantasytalking, wav2vec_processor, wav2vec
         if pipe is None:
-            pipe,fantasytalking,wav2vec_processor,wav2vec = load_models(args)
-        output_path=main(
-            args,pipe,fantasytalking,wav2vec_processor,wav2vec
-        )
+            pipe, fantasytalking, wav2vec_processor, wav2vec = load_models(args)
+        output_path = main(args, pipe, fantasytalking, wav2vec_processor, wav2vec)
         return output_path  # Ensure the output path is returned
     except Exception as e:
         print(f"Error during processing: {str(e)}")
@@ -170,7 +172,7 @@ def create_args(
         type=int,
         default=None,
         required=False,
-        help="Maximum parameter quantity retained in video memory, small number to reduce VRAM required"
+        help="Maximum parameter quantity retained in video memory, small number to reduce VRAM required",
     )
     parser.add_argument(
         "--seed",
@@ -215,8 +217,8 @@ with gr.Blocks(title="FantasyTalking Video Generation") as demo:
     # FantasyTalking: Realistic Talking Portrait Generation via Coherent Motion Synthesis
 
     <div align="center">
-        <strong> Mengchao Wang1*  Qiang Wang1*  Fan Jiang1† 
-        Yaqi Fan2    Yunpeng Zhang1,2   YongGang Qi2‡   
+        <strong> Mengchao Wang1*  Qiang Wang1*  Fan Jiang1†
+        Yaqi Fan2    Yunpeng Zhang1,2   YongGang Qi2‡
         Kun Zhao1.   Mu Xu1 </strong>
     </div>
 
@@ -227,7 +229,7 @@ with gr.Blocks(title="FantasyTalking Video Generation") as demo:
     <div style="display:flex;justify-content:center;column-gap:4px;">
         <a href="https://github.com/Fantasy-AMAP/fantasy-talking">
             <img src='https://img.shields.io/badge/GitHub-Repo-blue'>
-        </a> 
+        </a>
         <a href="https://arxiv.org/abs/2504.04842">
             <img src='https://img.shields.io/badge/ArXiv-Paper-red'>
         </a>

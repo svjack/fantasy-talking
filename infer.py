@@ -1,20 +1,25 @@
-import torch
-from diffsynth import ModelManager, WanVideoPipeline
-from PIL import Image
+# Copyright Alibaba Inc. All Rights Reserved.
+
 import argparse
-from transformers import Wav2Vec2Processor, Wav2Vec2Model
-import librosa
 import os
 import subprocess
-import cv2
-from model import FantasyTalkingAudioConditionModel
-from utils import save_video, get_audio_features, resize_image_by_longest_edge
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
+
+import cv2
+import librosa
+import torch
+from PIL import Image
+from transformers import Wav2Vec2Model, Wav2Vec2Processor
+
+from diffsynth import ModelManager, WanVideoPipeline
+from model import FantasyTalkingAudioConditionModel
+from utils import get_audio_features, resize_image_by_longest_edge, save_video
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Simple example of a training script.")
-    
+
     parser.add_argument(
         "--wan_model_dir",
         type=str,
@@ -96,7 +101,7 @@ def parse_args():
         type=int,
         default=81,
         required=False,
-        help="The maximum frames for generating videos, the audio part exceeding max_num_frames/fps will be truncated."
+        help="The maximum frames for generating videos, the audio part exceeding max_num_frames/fps will be truncated.",
     )
     parser.add_argument(
         "--fps",
@@ -109,7 +114,7 @@ def parse_args():
         type=int,
         default=None,
         required=False,
-        help="Maximum parameter quantity retained in video memory, small number to reduce VRAM required"
+        help="Maximum parameter quantity retained in video memory, small number to reduce VRAM required",
     )
     parser.add_argument(
         "--seed",
@@ -119,6 +124,7 @@ def parse_args():
     )
     args = parser.parse_args()
     return args
+
 
 def load_models(args):
     # Load Wan I2V models
@@ -139,38 +145,47 @@ def load_models(args):
             f"{args.wan_model_dir}/Wan2.1_VAE.pth",
         ],
         # torch_dtype=torch.float8_e4m3fn, # You can set `torch_dtype=torch.bfloat16` to disable FP8 quantization.
-        torch_dtype=torch.bfloat16, # You can set `torch_dtype=torch.bfloat16` to disable FP8 quantization.
+        torch_dtype=torch.bfloat16,  # You can set `torch_dtype=torch.bfloat16` to disable FP8 quantization.
     )
-    pipe = WanVideoPipeline.from_model_manager(model_manager, torch_dtype=torch.bfloat16, device="cuda")
+    pipe = WanVideoPipeline.from_model_manager(
+        model_manager, torch_dtype=torch.bfloat16, device="cuda"
+    )
 
     # Load FantasyTalking weights
     fantasytalking = FantasyTalkingAudioConditionModel(pipe.dit, 768, 2048).to("cuda")
     fantasytalking.load_audio_processor(args.fantasytalking_model_path, pipe.dit)
-    
+
     # You can set `num_persistent_param_in_dit` to a small number to reduce VRAM required.
-    pipe.enable_vram_management(num_persistent_param_in_dit=args.num_persistent_param_in_dit)
+    pipe.enable_vram_management(
+        num_persistent_param_in_dit=args.num_persistent_param_in_dit
+    )
 
     # Load wav2vec models
     wav2vec_processor = Wav2Vec2Processor.from_pretrained(args.wav2vec_model_dir)
     wav2vec = Wav2Vec2Model.from_pretrained(args.wav2vec_model_dir).to("cuda")
 
-    return pipe,fantasytalking,wav2vec_processor,wav2vec
+    return pipe, fantasytalking, wav2vec_processor, wav2vec
 
 
-
-def main(args,pipe,fantasytalking,wav2vec_processor,wav2vec):
-    os.makedirs(args.output_dir,exist_ok=True)
+def main(args, pipe, fantasytalking, wav2vec_processor, wav2vec):
+    os.makedirs(args.output_dir, exist_ok=True)
 
     duration = librosa.get_duration(filename=args.audio_path)
-    num_frames = min(int(args.fps*duration//4)*4+5,args.max_num_frames)
+    num_frames = min(int(args.fps * duration // 4) * 4 + 5, args.max_num_frames)
 
-    audio_wav2vec_fea = get_audio_features(wav2vec,wav2vec_processor,args.audio_path,args.fps,num_frames)
-    image = resize_image_by_longest_edge(args.image_path,args.image_size)
+    audio_wav2vec_fea = get_audio_features(
+        wav2vec, wav2vec_processor, args.audio_path, args.fps, num_frames
+    )
+    image = resize_image_by_longest_edge(args.image_path, args.image_size)
     width, height = image.size
 
     audio_proj_fea = fantasytalking.get_proj_fea(audio_wav2vec_fea)
-    pos_idx_ranges = fantasytalking.split_audio_sequence(audio_proj_fea.size(1),num_frames=num_frames)
-    audio_proj_split,audio_context_lens = fantasytalking.split_tensor_with_padding(audio_proj_fea,pos_idx_ranges,expand_length=4) # [b,21,9+8,768]
+    pos_idx_ranges = fantasytalking.split_audio_sequence(
+        audio_proj_fea.size(1), num_frames=num_frames
+    )
+    audio_proj_split, audio_context_lens = fantasytalking.split_tensor_with_padding(
+        audio_proj_fea, pos_idx_ranges, expand_length=4
+    )  # [b,21,9+8,768]
 
     # Image-to-video
     video_audio = pipe(
@@ -181,34 +196,41 @@ def main(args,pipe,fantasytalking,wav2vec_processor,wav2vec):
         height=height,
         num_frames=num_frames,
         num_inference_steps=30,
-        seed=args.seed, tiled=True,
+        seed=args.seed,
+        tiled=True,
         audio_scale=args.audio_scale,
-        cfg_scale = args.prompt_cfg_scale,
+        cfg_scale=args.prompt_cfg_scale,
         audio_cfg_scale=args.audio_cfg_scale,
         audio_proj=audio_proj_split,
         audio_context_lens=audio_context_lens,
-        latents_num_frames=(num_frames-1)//4+1
+        latents_num_frames=(num_frames - 1) // 4 + 1,
     )
     current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
     save_path_tmp = f"{args.output_dir}/tmp_{Path(args.image_path).stem}_{Path(args.audio_path).stem}_{current_time}.mp4"
     save_video(video_audio, save_path_tmp, fps=args.fps, quality=5)
-    
+
     save_path = f"{args.output_dir}/{Path(args.image_path).stem}_{Path(args.audio_path).stem}_{current_time}.mp4"
     final_command = [
-        "ffmpeg", "-y",
-        "-i", save_path_tmp,       
-        "-i", args.audio_path, 
-        "-c:v", "libx264",        
-        "-c:a", "aac",           
-        "-shortest",             
-        save_path              
+        "ffmpeg",
+        "-y",
+        "-i",
+        save_path_tmp,
+        "-i",
+        args.audio_path,
+        "-c:v",
+        "libx264",
+        "-c:a",
+        "aac",
+        "-shortest",
+        save_path,
     ]
     subprocess.run(final_command, check=True)
     os.remove(save_path_tmp)
     return save_path
 
+
 if __name__ == "__main__":
     args = parse_args()
-    pipe,fantasytalking,wav2vec_processor,wav2vec = load_models(args)
+    pipe, fantasytalking, wav2vec_processor, wav2vec = load_models(args)
 
-    main(args,pipe,fantasytalking,wav2vec_processor,wav2vec)
+    main(args, pipe, fantasytalking, wav2vec_processor, wav2vec)

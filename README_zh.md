@@ -1,8 +1,8 @@
 [中文阅读](./README_zh.md)
 # FantasyTalking: Realistic Talking Portrait Generation via Coherent Motion Synthesis
 
-[![Home Page](https://img.shields.io/badge/Project-<Website>-blue.svg)](https://fantasy-amap.github.io/fantasy-talking/) 
-[![arXiv](https://img.shields.io/badge/Arxiv-2504.04842-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2504.04842) 
+[![Home Page](https://img.shields.io/badge/Project-<Website>-blue.svg)](https://fantasy-amap.github.io/fantasy-talking/)
+[![arXiv](https://img.shields.io/badge/Arxiv-2504.04842-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2504.04842)
 [![hf_paper](https://img.shields.io/badge/🤗-Paper%20In%20HF-red.svg)](https://huggingface.co/papers/2504.04842)
 
 ## 🔥 Latest News!!
@@ -34,7 +34,7 @@ pip install flash_attn
 | --------------|-------------------------------------------------------------------------------|-------------------------------|
 | Wan2.1-I2V-14B-720P  |      🤗 [Huggingface](https://huggingface.co/Wan-AI/Wan2.1-I2V-14B-720P)    🤖 [ModelScope](https://www.modelscope.cn/models/Wan-AI/Wan2.1-I2V-14B-720P)     | 基础模型
 | Wav2Vec |      🤗 [Huggingface](https://huggingface.co/facebook/wav2vec2-base-960h)    🤖 [ModelScope](https://modelscope.cn/models/AI-ModelScope/wav2vec2-base-960h)      | 音频编码器
-| FantasyTalking model      |      🤗 [Huggingface](https://huggingface.co/acvlab/FantasyTalking/)     🤖 [ModelScope](https://www.modelscope.cn/models/amap_cvlab/FantasyTalking/)         | 我们的音频条件权重 
+| FantasyTalking model      |      🤗 [Huggingface](https://huggingface.co/acvlab/FantasyTalking/)     🤖 [ModelScope](https://www.modelscope.cn/models/amap_cvlab/FantasyTalking/)         | 我们的音频条件权重
 
 使用huggingface-cli下载模型：
 ``` sh
@@ -54,7 +54,7 @@ modelscope download amap_cvlab/FantasyTalking --files fantasytalking_model.ckpt 
 
 ### 🔑 推理
 ``` sh
-python infer.py  --image_path ./assets/images/woman.png --audio_path ./assets/audios/woman.wav 
+python infer.py  --image_path ./assets/images/woman.png --audio_path ./assets/audios/woman.wav
 ```
 您可以通过提示控制角色的行为。提示和音频配置的推荐范围是[3-7]。
 ``` sh
@@ -93,4 +93,3 @@ If you find this repository useful, please consider giving a star ⭐ and citati
 
 ## 致谢
 感谢[Wan2.1](https://github.com/Wan-Video/Wan2.1)、[HunyuanVideo](https://github.com/Tencent/HunyuanVideo)和[DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio)开源他们的模型和代码，为该项目提供了宝贵的参考和支持。他们对开源社区的贡献真正值得赞赏。
-

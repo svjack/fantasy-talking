@@ -1,9 +1,11 @@
-from diffsynth.models.wan_video_dit import flash_attention, WanModel
-import torch.nn.functional as F
-import torch.nn as nn
-import torch
 import os
+
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
 from safetensors import safe_open
+
+from diffsynth.models.wan_video_dit import WanModel, flash_attention
 
 
 class AudioProjModel(nn.Module):
@@ -117,9 +119,9 @@ class FantasyTalkingAudioConditionModel(nn.Module):
             with safe_open(ip_ckpt, framework="pt", device="cpu") as f:
                 for key in f.keys():
                     if key.startswith("proj_model."):
-                        state_dict["proj_model"][key.replace("proj_model.", "")] = (
-                            f.get_tensor(key)
-                        )
+                        state_dict["proj_model"][
+                            key.replace("proj_model.", "")
+                        ] = f.get_tensor(key)
                     elif key.startswith("audio_processor."):
                         state_dict["audio_processor"][
                             key.replace("audio_processor.", "")
@@ -130,7 +132,6 @@ class FantasyTalkingAudioConditionModel(nn.Module):
         wan_dit.load_state_dict(state_dict["audio_processor"], strict=False)
 
     def get_proj_fea(self, audio_fea=None):
-
         return self.proj_model(audio_fea) if audio_fea is not None else None
 
     def split_audio_sequence(self, audio_proj_length, num_frames=81):
@@ -210,9 +211,7 @@ class FantasyTalkingAudioConditionModel(nn.Module):
             if valid_start <= valid_end:
                 valid_part = input_tensor[:, valid_start : valid_end + 1, :]
             else:
-                valid_part = input_tensor.new_zeros(
-                    (1, 0, input_tensor.size(2))
-                )  
+                valid_part = input_tensor.new_zeros((1, 0, input_tensor.size(2)))
 
             # In the sequence dimension (the 1st dimension) perform padding
             padded_subseq = F.pad(

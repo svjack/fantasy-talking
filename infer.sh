@@ -8,8 +8,4 @@ python infer.py \
     --prompt_cfg_scale 5.0 \
     --audio_cfg_scale 5.0 \
     --fps 23 \
-    --seed 1111 
-
-
-
-
+    --seed 1111

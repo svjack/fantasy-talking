@@ -286,8 +286,8 @@ with gr.Blocks(title="FantasyTalking Video Generation") as demo:
             gr.Examples(
                 examples=[
                     [
-                        "/home/wangmengchao.wmc/code/fantasytalking/assets/images/woman.png",
-                        "/home/wangmengchao.wmc/code/fantasytalking/assets/audios/woman.wav",
+                        "assets/images/woman.png",
+                        "assets/audios/woman.wav",
                     ],
                 ],
                 inputs=[image_input, audio_input],

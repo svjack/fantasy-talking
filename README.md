@@ -42,7 +42,7 @@ Download models using huggingface-cli:
 pip install "huggingface_hub[cli]"
 huggingface-cli download Wan-AI/Wan2.1-I2V-14B-720P --local-dir ./models/Wan2.1-I2V-14B-720P
 huggingface-cli download facebook/wav2vec2-base-960h --local-dir ./models/wav2vec2-base-960h
-huggingface-cli download acvlab/FantasyTalking --files fantasytalking_model.ckpt --local-dir ./models/fantasytalking_model.ckpt
+huggingface-cli download acvlab/FantasyTalking fantasytalking_model.ckpt --local-dir ./models/fantasytalking_model.ckpt
 ```
 
 Download models using modelscope-cli:

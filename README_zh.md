@@ -41,7 +41,7 @@ pip install flash_attn
 pip install "huggingface_hub[cli]"
 huggingface-cli download Wan-AI/Wan2.1-I2V-14B-720P --local-dir ./models/Wan2.1-I2V-14B-720P
 huggingface-cli download facebook/wav2vec2-base-960h --local-dir ./models/wav2vec2-base-960h
-huggingface-cli download acvlab/FantasyTalking --files fantasytalking_model.ckpt --local-dir ./models/fantasytalking_model.ckpt
+huggingface-cli download acvlab/FantasyTalking fantasytalking_model.ckpt --local-dir ./models/fantasytalking_model.ckpt
 ```
 
 使用modelscope-cli下载模型：
@@ -49,7 +49,7 @@ huggingface-cli download acvlab/FantasyTalking --files fantasytalking_model.ckpt
 pip install modelscope
 modelscope download Wan-AI/Wan2.1-I2V-14B-720P --local_dir ./models/Wan2.1-I2V-14B-720P
 modelscope download AI-ModelScope/wav2vec2-base-960h --local_dir ./models/wav2vec2-base-960h
-modelscope download amap_cvlab/FantasyTalking --files fantasytalking_model.ckpt --local-dir ./models/fantasytalking_model.ckpt
+modelscope download acvlab/FantasyTalking fantasytalking_model.ckpt --local-dir ./models/fantasytalking_model.ckpt
 ```
 
 ### 🔑 推理

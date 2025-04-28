@@ -1,26 +1,95 @@
+[中文阅读](./README_zh.md)
 # FantasyTalking: Realistic Talking Portrait Generation via Coherent Motion Synthesis
 
-[![Home Page](https://img.shields.io/badge/Project-<Website>-blue.svg)](https://fantasy-amap.github.io/fantasy-talking/) 
-[![arXiv](https://img.shields.io/badge/Arxiv-2504.04842-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2504.04842) 
+[![Home Page](https://img.shields.io/badge/Project-<Website>-blue.svg)](https://fantasy-amap.github.io/fantasy-talking/)
+[![arXiv](https://img.shields.io/badge/Arxiv-2504.04842-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2504.04842)
 [![hf_paper](https://img.shields.io/badge/🤗-Paper%20In%20HF-red.svg)](https://huggingface.co/papers/2504.04842)
 
-## Abstract
+## 🔥 Latest News!!
+* April 28, 2025: We released the inference code and model weights for audio conditions.
 
-> Creating a realistic animatable avatar from a single static portrait remains challenging. Existing approaches often struggle to capture subtle facial expressions, the associated global body movements, and the dynamic background. To address these limitations, we propose a novel framework that leverages a pretrained video diffusion transformer model to generate high-fidelity, coherent talking portraits with controllable motion dynamics. At the core of our work is a dual-stage audio-visual alignment strategy. In the first stage, we employ a clip-level training scheme to establish coherent global motion by aligning audio-driven dynamics across the entire scene, including the reference portrait, contextual objects, and background. In the second stage, we refine lip movements at the frame level using a lip-tracing mask, ensuring precise synchronization with audio signals. To preserve identity without compromising motion flexibility, we replace the commonly used reference network with a facial-focused cross-attention module that effectively maintains facial consistency throughout the video. Furthermore, we integrate a motion intensity modulation module that explicitly controls expression and body motion intensity, enabling controllable manipulation of portrait movements beyond mere lip motion. Extensive experimental results show that our proposed approach achieves higher quality with better realism, coherence, motion intensity, and identity preservation.
+
+<!-- ![Fig.1](https://github.com/Fantasy-AMAP/fantasy-talking/blob/main/assert/fig0_1_0.png) -->
 
 
-![Fig.1](https://github.com/Fantasy-AMAP/fantasy-talking/blob/main/assert/fig0_1_0.png)
+## Quickstart
+### 🛠️Installation
 
-## Code
+Clone the repo:
 
-Ours model and code is comming soon.
+```
+git clone https://github.com/Fantasy-AMAP/fantasy-talking.git
+cd fantasy-talking
+```
 
-## Citation
+Install dependencies:
+```
+# Ensure torch >= 2.0.0
+pip install -r requirements.txt
+# Optional to install flash_attn to accelerate attention computation
+pip install flash_attn
+```
+
+### 🧱Model Download
+| Models        |                       Download Link                                           |    Notes                      |
+| --------------|-------------------------------------------------------------------------------|-------------------------------|
+| Wan2.1-I2V-14B-720P  |      🤗 [Huggingface](https://huggingface.co/Wan-AI/Wan2.1-I2V-14B-720P)    🤖 [ModelScope](https://www.modelscope.cn/models/Wan-AI/Wan2.1-I2V-14B-720P)     | Base model
+| Wav2Vec |      🤗 [Huggingface](https://huggingface.co/facebook/wav2vec2-base-960h)    🤖 [ModelScope](https://modelscope.cn/models/AI-ModelScope/wav2vec2-base-960h)      | Audio encoder
+| FantasyTalking model      |      🤗 [Huggingface](https://huggingface.co/acvlab/FantasyTalking/)     🤖 [ModelScope](https://www.modelscope.cn/models/amap_cvlab/FantasyTalking/)         | Our audio condition weights
+
+Download models using huggingface-cli:
+``` sh
+pip install "huggingface_hub[cli]"
+huggingface-cli download Wan-AI/Wan2.1-I2V-14B-720P --local-dir ./models/Wan2.1-I2V-14B-720P
+huggingface-cli download facebook/wav2vec2-base-960h --local-dir ./models/wav2vec2-base-960h
+huggingface-cli download acvlab/FantasyTalking --files fantasytalking_model.ckpt --local-dir ./models/fantasytalking_model.ckpt
+```
+
+Download models using modelscope-cli:
+``` sh
+pip install modelscope
+modelscope download Wan-AI/Wan2.1-I2V-14B-720P --local_dir ./models/Wan2.1-I2V-14B-720P
+modelscope download AI-ModelScope/wav2vec2-base-960h --local_dir ./models/wav2vec2-base-960h
+modelscope download amap_cvlab/FantasyTalking --files fantasytalking_model.ckpt --local-dir ./models/fantasytalking_model.ckpt
+```
+
+### 🔑 Inference
+``` sh
+python infer.py  --image_path ./assets/images/woman.png --audio_path ./assets/audios/woman.wav
+```
+You can control the character's behavior through the prompt. The recommended range for prompt and audio cfg is [3-7].
+``` sh
+python infer.py  --image_path ./assets/images/woman.png --audio_path ./assets/audios/woman.wav --prompt "The person is speaking enthusiastically, with their hands continuously waving." --prompt_cfg_scale 5.0 --audio_cfg_scale 5.0
+```
+
+We present a detailed table here. The model is tested on a single A100.(512x512, 81 frames).
+
+|`torch_dtype`|`num_persistent_param_in_dit`|Speed|Required VRAM|
+|-|-|-|-|
+|torch.bfloat16|None (unlimited)|15.5s/it|40G|
+|torch.bfloat16|7*10**9 (7B)|32.8s/it|20G|
+|torch.bfloat16|0|42.6s/it|5G|
+
+### Gradio Demo
+We construct an online demo in Huggingface.
+For the local gradio demo, you can run:
+``` sh
+pip install gradio spaces
+python app.py
+```
+
+## 🧩 Community Works
+We ❤️ contributions from the open-source community! If your work has improved FantasyTalking, please inform us.
+## 🔗Citation
+If you find this repository useful, please consider giving a star ⭐ and citation
 ```
 @article{wang2025fantasytalking,
-  title={FantasyTalking: Realistic Talking Portrait Generation via Coherent Motion Synthesis},
-  author={Wang, Mengchao and Wang, Qiang and Jiang, Fan and Fan, Yaqi and Zhang, Yunpeng and Qi, Yonggang and Zhao, Kun and Xu, Mu},
-  journal={arXiv preprint arXiv:2504.04842},
-  year={2025}
-}
+   title={FantasyTalking: Realistic Talking Portrait Generation via Coherent Motion Synthesis},
+   author={Wang, Mengchao and Wang, Qiang and Jiang, Fan and Fan, Yaqi and Zhang, Yunpeng and Qi, Yonggang and Zhao, Kun and Xu, Mu},
+   journal={arXiv preprint arXiv:2504.04842},
+   year={2025}
+ }
 ```
+
+## Acknowledgments
+Thanks to [Wan2.1](https://github.com/Wan-Video/Wan2.1), [HunyuanVideo](https://github.com/Tencent/HunyuanVideo), and [DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio) for open-sourcing their models and code, which provided valuable references and support for this project. Their contributions to the open-source community are truly appreciated.

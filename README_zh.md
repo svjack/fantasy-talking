@@ -81,7 +81,7 @@ python app.py
 我们❤️喜欢来自开源社区的贡献！如果你的工作改进了FantasyTalking，请告诉我们。
 
 ## 🔗Citation
-If you find this repository useful, please consider giving a star ⭐ and citation
+如果您发现此存储库有用，请考虑给出一个星号⭐和引用：
 ```
 @article{wang2025fantasytalking,
    title={FantasyTalking: Realistic Talking Portrait Generation via Coherent Motion Synthesis},

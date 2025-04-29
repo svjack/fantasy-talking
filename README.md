@@ -12,7 +12,7 @@ python infer.py  --image_path ganyu.png \
 
 ```python
 #https://huggingface.co/datasets/simon3000/genshin-voice
-#pip install soundfile datasets
+#pip install soundfile datasets huggingface_hub soundfile librosa
 
 from datasets import load_dataset
 import soundfile as sf

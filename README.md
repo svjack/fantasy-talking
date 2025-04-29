@@ -1,3 +1,49 @@
+```bash
+sudo apt-get update && sudo apt-get install git-lfs cbm ffmpeg
+git clone https://huggingface.co/spaces/svjack/FantasyTalking && cd FantasyTalking
+pip install -r requirements.txt
+
+#### 512 image 极短 音频
+python infer.py  --image_path ganyu.png \
+ --audio_path assets/audios/woman.wav \
+ --prompt "In this vibrant anime-style digital illustration, GANYU, a character with light blue hair and red horns, is depicted sitting at a café table. She holds a white coffee cup with a logo, steam rising from it, and a plate with a cake and fruit. She wears a white shirt and a black apron. The background shows a cozy café with wooden walls, potted plants, and soft lighting. The overall atmosphere is warm and inviting." \
+ --prompt_cfg_scale 5.0 --audio_cfg_scale 5.0 --num_persistent_param_in_dit 7000000000
+```
+
+```python
+#https://huggingface.co/datasets/simon3000/genshin-voice
+#pip install soundfile datasets
+
+from datasets import load_dataset
+import soundfile as sf
+import os
+
+# Load the dataset
+dataset = load_dataset('simon3000/genshin-voice', split='train', streaming=True)
+
+# Filter the dataset for Chinese voices of Ganyu with transcriptions
+chinese_ganyu = dataset.filter(lambda voice: voice['language'] == 'Chinese' and voice['speaker'] == 'Ganyu' and voice['transcription'] != '')
+
+# Create a folder to store the audio and transcription files
+ganyu_folder = 'genshin_impact_ganyu_audio_sample'
+os.makedirs(ganyu_folder, exist_ok=True)
+
+# Process each voice in the filtered dataset
+for i, voice in enumerate(chinese_ganyu):
+  audio_path = os.path.join(ganyu_folder, f'{i}_audio.wav')  # Path to save the audio file
+  transcription_path = os.path.join(ganyu_folder, f'{i}_audio.txt')  # Path to save the transcription file
+
+  # Save the audio file
+  sf.write(audio_path, voice['audio']['array'], voice['audio']['sampling_rate'])
+
+  # Save the transcription file
+  with open(transcription_path, 'w') as transcription_file:
+    transcription_file.write(voice['transcription'])
+
+  print(f'{i} done')  # Print the progress
+
+```
+
 [中文阅读](./README_zh.md)
 # FantasyTalking: Realistic Talking Portrait Generation via Coherent Motion Synthesis
 

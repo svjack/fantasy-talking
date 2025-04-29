@@ -27,7 +27,7 @@ cd fantasy-talking
 ```
 # Ensure torch >= 2.0.0
 pip install -r requirements.txt
-# Ensure install flash_attn
+# 可选安装 flash_attn 以加速注意力计算
 pip install flash_attn
 ```
 

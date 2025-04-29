@@ -6,6 +6,7 @@
 [![hf_paper](https://img.shields.io/badge/🤗-Paper%20In%20HF-red.svg)](https://huggingface.co/papers/2504.04842)
 
 ## 🔥 Latest News!!
+* April 29, 2025: Our work is merged to [ComfyUI-Wan](https://github.com/kijai/ComfyUI-WanVideoWrapper) ! Thank [kijai](https://github.com/kijai) for the update 👏!
 * April 28, 2025: We released the inference code and model weights for audio conditions.
 
 

@@ -12,4 +12,3 @@ protobuf
 modelscope
 ftfy
 librosa
-flash_attn

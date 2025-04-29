@@ -32,6 +32,66 @@ import warnings
 
 __all__ = ["WanModel"]
 
+def attention( 
+    q,
+    k,
+    v,
+    q_lens=None,
+    k_lens=None,
+    dropout_p=0.0,
+    softmax_scale=None,
+    q_scale=None,
+    causal=False,
+    window_size=(-1, -1),
+    deterministic=False,
+    dtype=torch.bfloat16,
+    version=None):
+    if (version is None or version == 3) and FLASH_ATTN_3_AVAILABLE:
+        x = flash_attention(
+            q=q,
+            k=k,
+            v=v,
+            q_lens=q_lens,
+            k_lens=k_lens,
+            dropout_p=dropout_p,
+            softmax_scale=softmax_scale,
+            q_scale=q_scale,
+            causal=causal,
+            window_size=window_size,
+            deterministic=deterministic,
+            dtype=dtype,
+            version=version,)
+    elif FLASH_ATTN_2_AVAILABLE:
+        x = flash_attention(
+            q=q,
+            k=k,
+            v=v,
+            q_lens=q_lens,
+            k_lens=k_lens,
+            dropout_p=dropout_p,
+            softmax_scale=softmax_scale,
+            q_scale=q_scale,
+            causal=causal,
+            window_size=window_size,
+            deterministic=deterministic,
+            dtype=dtype,
+            version=version,)
+    elif SAGE_ATTN_AVAILABLE:
+        q = q.unsqueeze(0).transpose(1, 2).to(dtype)
+        k = k.unsqueeze(0).transpose(1, 2).to(dtype)
+        v = v.unsqueeze(0).transpose(1, 2).to(dtype)
+        x = sageattn(q, k, v, dropout_p=dropout_p, is_causal=causal)
+        x = x.transpose(1, 2).contiguous()
+    else:
+        q = q.unsqueeze(0).transpose(1, 2).to(dtype)
+        k = k.unsqueeze(0).transpose(1, 2).to(dtype)
+        v = v.unsqueeze(0).transpose(1, 2).to(dtype)
+        x = torch.nn.functional.scaled_dot_product_attention(q, k, v)
+        x = x.transpose(1, 2).contiguous()
+    # output
+    return x
+
+
 
 def flash_attention(
     q,

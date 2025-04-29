@@ -5,7 +5,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from safetensors import safe_open
 
-from diffsynth.models.wan_video_dit import WanModel, flash_attention
+from diffsynth.models.wan_video_dit import WanModel, flash_attention, attention
 
 
 class AudioProjModel(nn.Module):
@@ -72,7 +72,7 @@ class WanCrossAttentionProcessor(nn.Module):
             audio_q = q.view(b * latents_num_frames, -1, n, d)  # [b, 21, l1, n, d]
             ip_key = self.k_proj(audio_proj).view(b * latents_num_frames, -1, n, d)
             ip_value = self.v_proj(audio_proj).view(b * latents_num_frames, -1, n, d)
-            audio_x = flash_attention(
+            audio_x = attention(
                 audio_q, ip_key, ip_value, k_lens=audio_context_lens
             )
             audio_x = audio_x.view(b, q.size(1), n, d)
@@ -80,7 +80,7 @@ class WanCrossAttentionProcessor(nn.Module):
         elif len(audio_proj.shape) == 3:
             ip_key = self.k_proj(audio_proj).view(b, -1, n, d)
             ip_value = self.v_proj(audio_proj).view(b, -1, n, d)
-            audio_x = flash_attention(q, ip_key, ip_value, k_lens=audio_context_lens)
+            audio_x = attention(q, ip_key, ip_value, k_lens=audio_context_lens)
             audio_x = audio_x.flatten(2)
         # output
         x = x + img_x + audio_x * audio_scale

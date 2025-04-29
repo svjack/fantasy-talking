@@ -72,7 +72,7 @@ We present a detailed table here. The model is tested on a single A100.(512x512,
 |torch.bfloat16|0|42.6s/it|5G|
 
 ### Gradio Demo
-We construct an online demo in Huggingface.
+We construct an [online demo](https://huggingface.co/spaces/acvlab/FantasyTalking) in Huggingface.
 For the local gradio demo, you can run:
 ``` sh
 pip install gradio spaces

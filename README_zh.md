@@ -71,7 +71,7 @@ python infer.py  --image_path ./assets/images/woman.png --audio_path ./assets/au
 |torch.bfloat16|0|42.6s/it|5G|
 
 ### Gradio 示例
-我们构建了一个Huggingface在线演示。
+我们构建了一个Huggingface[在线演示](https://huggingface.co/spaces/acvlab/FantasyTalking)。
 
 对于本地的gradio演示，您可以运行：
 ``` sh

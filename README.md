@@ -58,7 +58,7 @@ modelscope download amap_cvlab/FantasyTalking   fantasytalking_model.ckpt  --loc
 ``` sh
 python infer.py  --image_path ./assets/images/woman.png --audio_path ./assets/audios/woman.wav
 ```
-You can control the character's behavior through the prompt. The recommended range for prompt and audio cfg is [3-7].
+You can control the character's behavior through the prompt. **The recommended range for prompt and audio cfg is [3-7]. You can increase the audio cfg to achieve more consistent lip-sync.**
 ``` sh
 python infer.py  --image_path ./assets/images/woman.png --audio_path ./assets/audios/woman.wav --prompt "The person is speaking enthusiastically, with their hands continuously waving." --prompt_cfg_scale 5.0 --audio_cfg_scale 5.0
 ```

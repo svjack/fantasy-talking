@@ -58,7 +58,7 @@ modelscope download amap_cvlab/FantasyTalking   fantasytalking_model.ckpt  --loc
 ``` sh
 python infer.py  --image_path ./assets/images/woman.png --audio_path ./assets/audios/woman.wav
 ```
-您可以通过提示控制角色的行为。提示和音频配置的推荐范围是[3-7]。
+您可以通过提示控制角色的行为。**提示和音频cfg的推荐范围是[3-7]。你可以通过调高音频cfg获得更一致的口型同步。**
 ``` sh
 python infer.py  --image_path ./assets/images/woman.png --audio_path ./assets/audios/woman.wav --prompt "The person is speaking enthusiastically, with their hands continuously waving." --prompt_cfg_scale 5.0 --audio_cfg_scale 5.0
 ```

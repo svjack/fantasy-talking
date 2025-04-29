@@ -26,6 +26,8 @@ Install dependencies:
 ```
 # Ensure torch >= 2.0.0
 pip install -r requirements.txt
+# Ensure install flash_attn
+pip install flash_attn
 ```
 
 ### 🧱Model Download

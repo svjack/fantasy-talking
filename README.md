@@ -81,6 +81,8 @@ python app.py
 
 ## 🧩 Community Works
 We ❤️ contributions from the open-source community! If your work has improved FantasyTalking, please inform us.
+Or you can directly e-mail [frank.jf@alibaba-inc.com](mailto://frank.jf@alibaba-inc.com). We are happy to reference your project for everyone's convenience.
+
 ## 🔗Citation
 If you find this repository useful, please consider giving a star ⭐ and citation
 ```

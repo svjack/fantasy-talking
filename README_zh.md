@@ -6,6 +6,7 @@
 [![hf_paper](https://img.shields.io/badge/🤗-Paper%20In%20HF-red.svg)](https://huggingface.co/papers/2504.04842)
 
 ## 🔥 Latest News!!
+* 2025年4月29日: 我们的工作被加入到[ComfyUI-Wan](https://github.com/kijai/ComfyUI-WanVideoWrapper) ! 感谢 [kijai](https://github.com/kijai) 更新 👏!
 * 2025年4月28日: 开源了音频条件下的推理代码和模型权重。
 
 
